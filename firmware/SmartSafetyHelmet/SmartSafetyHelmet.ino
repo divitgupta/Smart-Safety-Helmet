@@ -42,7 +42,7 @@ void handleData() {
   json += "\"gas\":" + String(gas) + ",";
   json += "\"gforce\":" + String(gForce, 2) + ",";
   json += "\"helmet\":" + String(helmet) + ",";
-  json += "\"hazard\":\"" + String(hazard ? "⚠️ HAZARD DETECTED!" : "✅ Safe") + "\"";
+  json += "\"hazard\":\"" + String(hazard ? "[HAZARD] HAZARD DETECTED!" : "[SAFE] Safe") + "\"";
   json += "}";
   server.send(200, "application/json", json);
 }
@@ -58,12 +58,12 @@ void setup() {
   digitalWrite(LED_PIN, LOW);
 
   WiFi.softAP("SmartHelmet_AP", "helmet123");
-  Serial.println("✅ Access Point Started");
+  Serial.println("[SUCCESS] Access Point Started");
   Serial.print("IP Address: ");
   Serial.println(WiFi.softAPIP()); 
 
   if (!LittleFS.begin(true)) {
-    Serial.println("❌ Failed to mount LittleFS");
+    Serial.println("[ERROR] Failed to mount LittleFS");
     return;
   }
 
@@ -102,6 +102,6 @@ void loop() {
     Serial.printf("G-Force: %.2f g | Impact: %.2f g | Temp: %.2f °C | Hum: %.2f %% | Gas: %d | Helmet: %s | Status: %s\n",
                   gForce, impactForce, temperature, humidity, gas,
                   helmet == 0 ? "WORN" : "NOT WORN",
-                  hazard ? "⚠️ HAZARD DETECTED!" : "✅ Safe");
+                  hazard ? "[HAZARD] HAZARD DETECTED!" : "[SAFE] Safe");
   }
 }

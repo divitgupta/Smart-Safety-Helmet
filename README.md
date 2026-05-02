@@ -4,11 +4,8 @@ An IoT-based safety helmet designed for industrial workers to monitor environmen
 
 ## Features
 - **Real-time Monitoring**: Tracks Temperature, Humidity, Gas levels (ppm), and G-Force.
-- **Hazard Detection**: Automatically detects:
-  - **High Impact**: Abnormal G-force readings (falls or collisions).
-  - **Gas Leaks**: High concentrations of combustible gases (MQ2).
-  - **Extreme Heat**: High ambient temperature.
-  - **Compliance**: Detects if the helmet is being worn using an IR sensor.
+- **Hazard Detection**: Automatically detects high impact (falls or collisions), gas leaks (MQ2), and extreme heat.
+- **Compliance**: Detects if the helmet is being worn using an IR sensor.
 - **Visual & Audible Alerts**: On-board LED and Buzzer for immediate feedback.
 - **Web Dashboard**: An integrated web interface served directly from the ESP32 to visualize sensor data in real-time.
 
@@ -24,11 +21,11 @@ An IoT-based safety helmet designed for industrial workers to monitor environmen
   - LED Indicator
 
 ## Project Structure
-- `EL.ino`: Main Arduino/ESP32 source code.
-- `data/`: Web assets (HTML, CSS, JS) served via LittleFS.
-  - `index.html`: Main dashboard UI.
-  - `style.css`: Dashboard styling.
-  - `script.js`: Charting and data fetching logic.
+- `firmware/SmartSafetyHelmet/`:
+  - `SmartSafetyHelmet.ino`: Main Arduino/ESP32 source code.
+  - `data/`: Web assets (HTML, CSS, JS) served via LittleFS.
+- `assets/`: Media files including demonstration videos and prototype images.
+- `requirements.txt`: List of required Arduino libraries and hardware specs.
 
 ## Setup & Installation
 
@@ -45,26 +42,16 @@ Install the following libraries via the Arduino Library Manager:
 - `MPU6050` by Jeff Rowberg (or `MPU6050_tockn`)
 - `LittleFS` (Included in ESP32 core)
 
-### 3. Hardware Connections
-| Component | ESP32 Pin |
-|-----------|-----------|
-| DHT22     | GPIO 14   |
-| IR Sensor | GPIO 27   |
-| Buzzer    | GPIO 25   |
-| LED       | GPIO 26   |
-| MQ2 (Ana) | GPIO 36 (VP) |
-| MPU6050 SDA | GPIO 19 |
-| MPU6050 SCL | GPIO 18 |
-
-### 4. Uploading Code
-- Open `EL.ino` in Arduino IDE.
+### 3. Uploading Code
+- Open `firmware/SmartSafetyHelmet/SmartSafetyHelmet.ino` in Arduino IDE.
 - Select your ESP32 board and the correct COM port.
 - Click **Upload**.
 
-### 5. Uploading Data Folder (LittleFS)
+### 4. Uploading Data Folder (LittleFS)
 - You must upload the `data` folder to the ESP32's flash memory.
-- Use the **ESP32 Sketch Data Upload** tool (available for Arduino IDE 1.8.x or via CLI/PlatformIO).
+- Use the **ESP32 Sketch Data Upload** tool.
 - Ensure the upload method is set to **LittleFS**.
+- Note: The tool expects the `data` folder to be inside the same directory as the `.ino` file (`firmware/SmartSafetyHelmet/data/`).
 
 ## Usage
 1. Power up the helmet.
