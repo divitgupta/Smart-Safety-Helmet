@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Helmet Dashboard</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px auto;
+      gap: 20px;
+    }
+
+    .box {
+      background: #161b22;
+      border-radius: 10px;
+      padding: 15px;
+      width: 200px;
+      box-shadow: 0 0 8px rgba(255,255,255,0.1);
+    }
+
+    .gauge-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .gauge {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: conic-gradient(#444 0deg, #444 360deg);
+      position: relative;
+    }
+
+    .gauge-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .label {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+
+    .helmet-status {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #00ff9f;
+    }
+
+    .status-warning {
+      margin-top: 20px;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    .normal {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .hazard {
+      background-color: #ff5722;
+      color: white;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🛡️ Smart Helmet Dashboard</h1>
+  <div class="status-warning" id="alert">Connecting...</div>
+
+  <div class="grid">
+    <div class="box"><h3>G-Force</h3><div id="gfVal">--</div></div>
+    <div class="box"><h3>Temperature</h3><div id="tempVal">--</div></div>
+    <div class="box"><h3>Humidity</h3><div id="humVal">--</div></div>
+    <div class="box"><h3>Gas</h3><div id="gasVal">--</div></div>
+  </div>
+
+  <div class="helmet-status" id="helmetStatus">Helmet Status: --</div>
+
+  <div class="gauge-container">
+    <div>
+      <div class="gauge" id="gasGauge"><div class="gauge-value" id="gasGaugeVal">--</div></div>
+      <div class="label">Gas Level</div>
+    </div>
+    <div>
+      <div class="gauge" id="tempGauge"><div class="gauge-value" id="tempGaugeVal">--</div></div>
+      <div class="label">Temperature</div>
+    </div>
+    <div>
+      <div class="gauge" id="humGauge"><div class="gauge-value" id="humGaugeVal">--</div></div>
+      <div class="label">Humidity</div>
+    </div>
+  </div>
+
+  <script>
+    function updateGauge(id, value, max, color) {
+      const deg = Math.min(360, (value / max) * 360);
+      document.getElementById(id).style.background = `conic-gradient(${color} ${deg}deg, #222 ${deg}deg 360deg)`;
+    }
+
+    function fetchData() {
+      fetch("/data")
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("gfVal").innerText = data.gforce + " g";
+          document.getElementById("tempVal").innerText = data.temperature + " °C";
+          document.getElementById("humVal").innerText = data.humidity + " %";
+          document.getElementById("gasVal").innerText = data.gas + " ppm";
+          document.getElementById("helmetStatus").innerText =
+            data.helmet == 0 ? "Helmet Status: WORN" : "Helmet Status: NOT WORN";
+
+          updateGauge("gasGauge", data.gas, 1000, "#ff5252");
+          updateGauge("tempGauge", data.temperature, 60, "#03a9f4");
+          updateGauge("humGauge", data.humidity, 100, "#b76aff");
+
+          document.getElementById("gasGaugeVal").innerText = data.gas + " ppm";
+          document.getElementById("tempGaugeVal").innerText = data.temperature + " °C";
+          document.getElementById("humGaugeVal").innerText = data.humidity + " %";
+
+          const alertBox = document.getElementById("alert");
+          if (data.hazard.includes("HAZARD")) {
+            alertBox.innerText = data.hazard;
+            alertBox.classList.remove("normal");
+            alertBox.classList.add("hazard");
+          } else {
+            alertBox.innerText = data.hazard;
+            alertBox.classList.remove("hazard");
+            alertBox.classList.add("normal");
+          }
+        })
+        .catch(() => {
+          const alertBox = document.getElementById("alert");
+          alertBox.innerText = "⚠️ Could not connect to ESP32";
+          alertBox.className = "status-warning hazard";
+        });
+    }
+
+    setInterval(fetchData, 1000);
+  </script>
+</body>
+</html>

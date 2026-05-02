@@ -1,0 +1,13 @@
+# Hardware Requirements
+# Microcontroller: ESP32
+
+# Arduino Libraries (Install via Library Manager)
+# ----------------------------------------------
+dht-sensor-library==1.4.6 # Adafruit
+adafruit-unified-sensor==1.1.14 # Adafruit
+mpu6050==1.0.0 # Jeff Rowberg or MPU6050_tockn
+
+# Tools
+# ----------------------------------------------
+# ESP32 LittleFS Data Upload Tool
+# (For uploading the contents of the /data folder)

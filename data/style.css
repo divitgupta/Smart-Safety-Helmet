@@ -1,0 +1,75 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #1a1d2b;
+  color: #f0f0f0;
+}
+
+header {
+  background-color: #0d47a1;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.alert {
+  display: none;
+  background: #ff4444;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.status-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px;
+}
+
+.card {
+  background: #2c2f3e;
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 0 10px #00000050;
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #00e5ff;
+}
+
+.card p {
+  font-size: 24px;
+  margin: 10px 0;
+}
+
+.helmet-status {
+  text-align: center;
+  margin: 30px;
+}
+
+.helmet-status p.worn {
+  color: #00e676;
+  font-weight: bold;
+}
+
+.graphs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.chart-container {
+  background: #2c2f3e;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px #00000040;
+}
